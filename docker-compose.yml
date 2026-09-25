@@ -1,0 +1,31 @@
+name: depth-chart-adjudicator
+
+services:
+  app:
+    build: .
+    image: depth-chart-adjudicator:latest
+    environment:
+      PORT: 8000
+    ports:
+      # 宿主机端口可通过环境变量或 .env 中的 HOST_PORT 配置，默认 8000
+      - "${HOST_PORT:-8000}:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os,urllib.request;urllib.request.urlopen('http://127.0.0.1:'+os.environ.get('PORT','8000')+'/api/health',timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 5s
+    restart: unless-stopped
+
+  # 一次性验收服务：代码测试 + 构建检查 + API 冒烟，结束后自行退出，
+  # 以退出码报告结果（0 通过 / 非 0 失败）。
+  verify:
+    build: .
+    image: depth-chart-adjudicator:latest
+    depends_on:
+      app:
+        condition: service_healthy
+    environment:
+      API_BASE: http://app:8000
+    command: ["python", "-m", "verify.run"]
+    restart: "no"

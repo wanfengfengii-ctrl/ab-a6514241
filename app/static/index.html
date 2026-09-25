@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>航海测深图拼接裁决</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header>
+    <h1>航海测深图拼接裁决</h1>
+    <p>录入 3–6 段图纸边缘的刻度与刻线类型，裁决服务将给出可行的拼接顺序、
+       相邻重叠刻度配对、未配对刻度与总拼接误差。</p>
+  </header>
+
+  <main>
+    <section class="panel" id="entry-panel">
+      <div class="panel-head">
+        <h2>图纸录入</h2>
+        <div class="actions">
+          <button id="add-segment" type="button">＋ 添加图纸段</button>
+          <button id="adjudicate" type="button" class="primary">裁决</button>
+        </div>
+      </div>
+      <p class="hint" id="meta-hint">约束信息加载中…</p>
+      <div id="segments"></div>
+    </section>
+
+    <div id="error" class="error" role="alert" hidden></div>
+
+    <section class="panel" id="result-panel" hidden>
+      <h2>裁决结果</h2>
+      <div id="order" class="order"></div>
+      <div id="summary" class="summary"></div>
+
+      <h3>相邻边界配对</h3>
+      <div id="boundaries"></div>
+
+      <h3>未配对刻度</h3>
+      <div id="unpaired"></div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
